@@ -1,0 +1,20 @@
+.row-editar{
+    margin: 0 2px 0 0;
+}
+.buscarPersona {
+    margin: 0 49px 0 0;
+}
+
+.modal-name {
+    margin-top: -1%;
+    margin-bottom: -1%;
+}
+
+.modal-body {
+    background: #ECF0F5;
+    padding: 5px 0 0 0;
+}
+
+.modal-footer {
+    background: #ECF0F5;
+}

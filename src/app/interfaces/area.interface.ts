@@ -1,0 +1,20 @@
+export interface Area {
+  idArea?:string
+  idDepartamento?:string
+  idPersona?:string
+  nombreDepartamento?:string
+  fechaRegistroDepartamento?:string
+  estadoDepartamento?:string
+  nombreArea?:string
+  fechaRegistroArea?:string
+  estadoArea?:string
+  idConvenio?:string
+  primerNombre?:string
+  segundoNombre?:string
+  primerApellido?:string
+  segundoApellido?:string
+  //asigancionArea
+  idAsignacionArea?:string
+  estadoAsignacion?:string
+  fechaRegistroAsignacion?:string 
+}

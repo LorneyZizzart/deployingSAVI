@@ -1,0 +1,45 @@
+.form {
+    margin-left: 1%;
+    margin-right: 2%;
+}
+
+.buscador {
+    position: left;
+}
+
+.pad {
+    margin: 0 0 -30px 0;
+}
+.modal-name {
+    margin-top: 7%;
+}
+
+.modal-body {
+    padding-left: 8%;
+    background: #ECF0F5;
+}
+
+.modal-footer {
+    background: #ECF0F5;
+}
+
+.infoConvenio{
+    background: #ECF0F5;
+}
+
+.modal-footer-edit {
+    text-align: center;
+    margin: auto;
+}
+/*modal edit convenio*/
+.form-edit{
+  margin: 0 5% 0 0;  
+}
+
+.table-horario>thead>tr>th, .table-horario>tbody>tr>th, .table-horario>tfoot>tr>th, .table-horario>thead>tr>td, .table-horario>tbody>tr>td, .table-horario>tfoot>tr>td {
+    border: 3px solid #efebeb;
+}
+
+.table>tbody+tbody {
+    border-top: 1px solid rgb(158, 156, 156);
+}

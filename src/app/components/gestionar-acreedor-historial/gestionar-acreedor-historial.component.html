@@ -1,0 +1,291 @@
+<div class="wrapper">
+  <app-navbar-jf></app-navbar-jf>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+        Departamento
+        <small> de Finanzas</small>
+    </h1>
+      <ol class="breadcrumb">
+          <li><a (click)="irHome()"><i class="fa fa-home"></i> Home</a></li>
+          <li class="active">Informe de acreditaciones</li>
+      </ol>
+  </section>
+<!-- Main content -->
+<section class="content">
+
+    <div class="row">
+      <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="box box-primary">
+          <div class="box-body box-profile">
+            <img class="profile-user-img img-responsive img-circle" src="../../../../assets/img/avatar.png" alt="User profile picture">
+
+            <h3 class="profile-username text-center">{{nombreCompleto}}</h3>
+
+            <p class="text-muted text-center">{{convenioData.codEstudiante}}</p>
+
+            <ul class="list-group list-group-unbordered">
+              <li class="list-group-item">
+                <b>Carrera</b> <p>{{convenioData.carrera}}</p>
+              </li>
+              <li class="list-group-item">
+                <b>Semestre</b> <p class="pull-right">{{convenioData.semestre}}</p>
+              </li>
+            </ul>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+        <!-- About Me Box -->
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Convenio</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <strong><i class="fa fa-book margin-r-5"></i> Beca</strong>
+
+            <p class="pull-right">{{convenioData.beca}}</p>
+
+            <hr>
+
+            <strong><i class="fa fa-map-marker margin-r-5"></i> Departamento</strong>
+
+            <p class="pull-right">{{convenioData.departamento}}</p>
+            <hr>
+
+            <strong><i class="fa fa-map-marker margin-r-5"></i> Area de trabajo</strong>
+
+            <p *ngFor="let area of areas" class="pull-right">{{ area }} &nbsp;-&nbsp;</p>
+
+            <hr>
+
+            <strong><i class="fa fa-pencil margin-r-5"></i> Fecha inicio</strong>
+
+            <p class="pull-right">{{convenioData.fechaInicio}}</p>
+
+            <hr>
+
+            <strong><i class="fa fa-file-text-o margin-r-5"></i> Fecha final</strong>
+
+            <p class="pull-right">{{convenioData.fechaFinal}}</p>
+            <hr>
+
+            <strong><i class="fa fa-pencil margin-r-5"></i> Fotocopia de carnet</strong>
+
+            <p class="pull-right">{{convenioData.fotocopiaCarnet | boleano}}</p>
+            <hr>
+
+            <strong><i class="fa fa-pencil margin-r-5"></i> Solicitud de trabajo</strong>
+
+            <p class="pull-right">{{convenioData.solicitudTrabajo | boleano}}</p>
+            <hr>
+
+            <strong><i class="fa fa-pencil margin-r-5"></i> Estado del convenio</strong>
+
+            <p class="pull-right">{{convenioData.estadoConvenio | estado }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li (click)="getFecha(0)" class="active"><a href="#verTodo" data-toggle="tab">Ver todo</a></li>
+            <li><a href="#dia" data-toggle="tab">Día</a></li>
+            <li><a href="#semana" data-toggle="tab">Semana</a></li>
+            <li (click)="resetForm(frmMeses)"><a href="#mes" data-toggle="tab">Mes</a></li>
+            <li><a href="#gestion" data-toggle="tab">Gestión</a></li>
+          </ul>          
+          <div class="tab-content">
+            <div class="active tab-pane" id="verTodo">               
+            </div>
+            <div class="tab-pane" id="dia">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Fecha:</label>      
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <input #fecha type="text" class="form-control pull-right" id="datepicker" placeholder="01/12/2000">
+                      <div class="input-group-btn">
+                          <button (click)="getFecha(fecha.value)" type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>                
+            </div>
+            <div class="tab-pane" id="semana">
+                <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Rango de fechas:</label>            
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                          </div>
+                          <input #fechaRange type="text" class="form-control pull-right" id="reservation">
+                          <div class="input-group-btn">
+                            <button (click)="getFechaRange(fechaRange.value)" type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                        </div>
+                      </div>
+                  </div>
+                </div> 
+            </div>
+            <div class="tab-pane" id="mes">
+              <form action=""  #frmMeses="ngForm">
+                <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>
+                            <input (click)="getMonth(1, meses.enero)" type="checkbox" [(ngModel)]="meses.enero" name="meses.enero" class="minimal">
+                            Enero
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input (click)="getMonth(2, meses.febrero)" type="checkbox" [(ngModel)]="meses.febrero" name="meses.febrero" class="minimal">
+                            Febrero
+                        </label>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                          <input (click)="getMonth(3, meses.marzo)" type="checkbox" [(ngModel)]="meses.marzo" name="meses.marzo" class="minimal">
+                          Marzo
+                      </label>
+                  </div>
+                  <div class="form-group">
+                    <label>
+                        <input (click)="getMonth(4, meses.abril)" type="checkbox" [(ngModel)]="meses.abril" name="meses.abril" class="minimal">
+                        Abril
+                    </label>
+                </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>
+                            <input (click)="getMonth(5, meses.mayo)" type="checkbox" [(ngModel)]="meses.mayo" name="meses.mayo" class="minimal">
+                            Mayo
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input (click)="getMonth(6, meses.junio)" type="checkbox" [(ngModel)]="meses.junio" name="meses.junio" class="minimal">
+                            Junio
+                        </label>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                          <input (click)="getMonth(7, meses.julio)" type="checkbox" [(ngModel)]="meses.julio" name="meses.julio" class="minimal">
+                          Julio
+                      </label>
+                  </div>
+                  <div class="form-group">
+                    <label>
+                        <input (click)="getMonth(8, meses.agosto)" type="checkbox" [(ngModel)]="meses.agosto" name="meses.agosto" class="minimal">
+                        Agosto
+                    </label>
+                </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>
+                            <input (click)="getMonth(9, meses.septiembre)" type="checkbox" [(ngModel)]="meses.septiembre" name="meses.septiembre" class="minimal">
+                            Septiembre
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input (click)="getMonth(10, meses.octubre)" type="checkbox" [(ngModel)]="meses.octubre" name="meses.octubre" class="minimal">
+                            Octubre
+                        </label>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                          <input (click)="getMonth(11, meses.noviembre)" type="checkbox" [(ngModel)]="meses.noviembre" name="meses.noviembre" class="minimal">
+                          Noviembre
+                      </label>
+                  </div>
+                  <div class="form-group">
+                    <label>
+                        <input (click)="getMonth(12, meses.diciembre)" type="checkbox" [(ngModel)]="meses.diciembre" name="meses.diciembre" class="minimal">
+                        Diciembre
+                    </label>
+                </div>
+                    </div>
+                  </div> 
+              </form>
+                
+            </div>
+            <div class="tab-pane" id="gestion">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Gestión:</label>      
+                            <div class="input-group date">
+                              <input #gestion type="text" class="form-control pull-right" id="datepicker" placeholder="2000">
+                              <div class="input-group-btn">
+                                  <button (click)="getGestion(gestion.value)" type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                  </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+          <div class="box">
+              <div class="box-header with-border">
+                  <h3 class="box-title">Historial de acreditaciones</h3>
+                  <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" title="Generar PDF"><i class="fa fa-file-pdf-o"></i></button>
+                      <button type="button" class="btn btn-box-tool" title="Imprimir"><i class="fa fa-print"></i></button>
+                  </div>
+              </div>
+              <div class="box-body">                    
+                  <div class="table-responsive pad">
+                      <table class="table table-bordered table-hover ">
+                          <tr class="text-center fila-tabla">
+                              <th style="width: 10px">#</th>
+                              <th class="text-center">Cod.</th>
+                              <th class="text-center">Fecha</th>
+                              <th class="text-center">Horas</th>
+                              <th class="text-center">Saldo</th>
+                              <th class="text-center" style="width: 10px">Aprobación Finanzas</th>
+                          </tr>
+                          <tr *ngFor="let informe of informeEstudiante; let i = index">
+                              <td>{{i+1}}.</td>
+                              <td class="text-center">{{informe.idInformeEstudiante}}</td>
+                              <td>{{informe.fecha | nameDay }}</td>
+                              <td class="text-center">{{informe.totalHoras}}</td>
+                              <td class="text-center">{{informe.totalSaldo}} Bs.</td> 
+                              <td class="text-center">
+                                <span *ngIf="informe.aprobadoFinanzas" class="badge bg-green"><i class="fa fa-check"></i></span>
+                                <span *ngIf="!informe.aprobadoFinanzas" class="badge bg-red"><i class="fa fa-times"></i></span>
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+          </div>
+          </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<app-footer></app-footer> 
+</div>

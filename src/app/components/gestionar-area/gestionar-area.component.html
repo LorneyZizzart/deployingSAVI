@@ -1,0 +1,313 @@
+<div class="wrapper">
+    <app-navbar-jf></app-navbar-jf>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Gestionar
+            <small>Áreas del departamento {{ nameDept }}</small>
+        </h1>
+    </section>
+
+    <!---MODAL-->
+    <div class="modal fade" id="modal-informacion">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Mas información ...</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-header with-border text-center">
+                                <h3 class="modal-name">Area de {{nombreArea}}</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="table-responsive no-padding">
+                                        <table class="table table-bordered table-hover">
+                                            <tr class="fila-tabla">
+                                                <th style="width: 10px">#</th>
+                                                <th>Nombre completo</th>
+                                                <th>Fecha de asignación</th>
+                                                <th style="width: 10%">Estado</th>
+                                                <th style="width: 18%"class="text-center">Opciones</th>
+                                            </tr>
+                                            <tr *ngFor="let area of studentArea; let i = index">
+                                                <td >{{ i+1 }}.</td>
+                                                <td >{{ area.primerApellido }} {{ area.segundoApellido }} {{ area.primerNombre }} {{ area.segundoNombre }}</td>
+                                                <td >{{ area.fechaRegistroAsignacion | date: 'dd/MM/yyyy' }}</td>
+                                                <td class="text-center">
+                                                    <a *ngIf="area.estadoAsignacion == true" (click)="editAsignacion(area.idArea, area.idAsignacionArea, '0')" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="right" title="Deshabilitar"><i class="fa fa-close"></i></a>
+                                                    <a *ngIf="area.estadoAsignacion == false" (click)="editAsignacion(area.idArea, area.idAsignacionArea, '1')" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="right" title="Habilitar"><i class="fa fa-check"></i></a>
+                                                </td>
+                                                <td  class="text-center">
+                                                    <a (click)="cambiarArea(area.idConvenio, area.idAsignacionArea)" data-toggle="modal" data-target="#modal-cambiarArea" class="btn btn-default btn-xs" title="Cambiar de área"><i class="fa fa-edit"></i></a>
+                                                    <a (click)="deleteAsignacion(area.idArea, area.idAsignacionArea)" class="btn btn-danger btn-xs"  title="Eliminar"><i class="fa fa-fw fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-editar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Editar</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="frmEditarArea" class="form-horizontal">
+
+                        <div class="row row-editar">
+                            <div class="col-md-12">
+                                <br>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Nombre:</label>
+                                        <input [(ngModel)]="area.nombreArea" name="area.nombreArea" type="text" class="form-control" id="nombreArea">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-center">
+
+                                <button (click)="putArea()" type="submit" name="button" class="btn btn-primary margin" data-dismiss="modal">
+                                    <i class="fa fa-refresh"></i> Actualizar
+                          </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-cambiarArea">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Cambiar de área</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="frmCambiarArea" class="form-horizontal">
+                        <div class="row" style="margin-right: 2%;margin-left: 2%;">
+                            <div class="form-group">
+                                <label>Buscar areas: </label>
+                                <select #idAre [(ngModel)]="area.idArea" name="area.idArea" class="form-control select2" style="width: 100%;">
+                                    <option *ngFor="let area of listaAreaDepartamento" [value]="area.idArea">{{ area.nombreArea }}</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-12 text-center">
+
+                                <button  (click)="putAsignacionArea(idAre.value)" type="submit" name="button" class="btn btn-primary margin" data-dismiss="modal">
+                                    <i class="fa fa-refresh"></i> Actualizar
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-eliminar">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Confirmar</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row text-center">
+                            <div class="col-md-6">
+                                <button type="button"  data-dismiss="modal" aria-label="Close" class="btn btn-danger">Cancelar</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button (click)="eliminarArea()" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Main content -->
+    <section  class="content">
+        <div *ngIf="IdDepartamento != 0" class="row">
+            <div class="col-xs-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#lista" data-toggle="tab">Lista</a></li>
+                        <li><a href="#registrar" data-toggle="tab">Registrar</a></li>
+                        <li (click)="getEstudiantes()" ><a href="#asignar" data-toggle="tab">Asignar estudiante a un área</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- LISTA -->
+                        <div class="tab-pane active" id="lista">
+                            <section id="new">
+                                <div class="box-header with-border">
+                                    <h4 class="page-header"><i class="fa fa-list-ul"></i> Lista de áreas del departamento </h4>
+                                    <div class="box-tools left">
+                                        <div class="input-group input-group-sm" style="width: 300px;">
+                                            <input (keyup)="buscarArea(buscarNombre.value)" #buscarNombre type="text" name="buscarNombre" class="form-control pull-right" placeholder="Buscar area">
+
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive no-padding">
+                                    <table class="table table-bordered table-hover">
+                                        <tr class="fila-tabla">
+                                            <th style="width: 10px">#</th>
+                                            <th>Departamento</th>
+                                            <th>Area</th>
+                                            <th>Fecha de Registro</th>
+                                            <th style="width: 10px">Estado</th>
+                                            <th style="width: 15%"class="text-center">Opciones</th>
+                                        </tr>
+                                        <tr *ngFor="let area of listaAreaDepartamento; let i = index">
+                                            <td>{{ i+1 }}.</td>
+                                            <td>{{ area.nombreDepartamento }}</td>
+                                            <td>{{ area.nombreArea }}</td>
+                                            <td>{{ area.fechaRegistroArea | date: 'dd/MM/yyyy' }}</td>
+                                            <td class="text-center">
+                                                <a *ngIf="area.estadoArea == true" (click)="editEstadoArea(area.idArea, '0')" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="right" title="Deshabilitar"><i class="fa fa-close"></i></a>
+                                                <a *ngIf="area.estadoArea == false" (click)="editEstadoArea(area.idArea, '1')" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="right" title="Habilitar"><i class="fa fa-check"></i></a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a (click)="verAsignacionArea(area.nombreArea, area.idArea)" data-toggle="modal" class="btn btn-primary btn-xs" data-target="#modal-informacion" title="Ver"><i class="fa fa-eye"></i></a>
+                                                <a (click)="editArea(area.nombreArea, area.idArea)" data-toggle="modal" data-target="#modal-editar" class="btn btn-default btn-xs" title="Editar"><i class="fa fa-edit"></i></a>
+                                                <a (click)="deleteArea(area.idArea)" data-toggle="modal" data-target="#modal-eliminar" class="btn btn-danger btn-xs"  title="Eliminar"><i class="fa fa-fw fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </section>
+                        </div>
+                        <!-- /#LISTA -->
+                        <!-- REGISTRAR -->
+                        <div class="tab-pane" id="registrar">
+                            <section id="new">
+                                <h4 class="page-header"><i class="fa fa-address-book"></i> Nueva área</h4>
+
+                                <form (ngSubmit)="saveArea()" #registroArea="ngForm" name="formularioRegistroArea" class="form-horizontal">
+
+                                    <div class="row">
+                                        <div class="col-md-7">
+
+                                            <div class="form-group">
+                                                <label for="inputName" class="col-sm-5 control-label">Nombre del area</label>
+
+                                                <div class="col-sm-7">
+                                                    <input [(ngModel)]="area.nombreArea" name="nombreArea" type="text" class="form-control" id="nombreArea" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                                <button type="submit" name="button" class="btn-save btn btn-primary margin">
+                                                    <i class="fa fa-save"></i> Guardar
+                                                </button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+                        <!-- /#REGISTRAR -->
+                        <!-- Asignar Area estudiante -->
+                         <div class="tab-pane" id="asignar">
+                            <section id="new">
+                                <h4 class="page-header"><i class="fa fa-address-book"></i> Asignación de área a estudiantes</h4>
+
+                                <form (ngSubmit)="saveAsignarArea(idCon.value, idAr.value, frmAsignacionArea)" #frmAsignacionArea="ngForm" name="frmAsignacionArea" class="form-horizontal">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="inputName" class="col-sm-4 control-label">Buscar nombre:</label>
+
+                                                <div class="col-sm-8 select-student">
+                                                    <select #idCon [(ngModel)]="idConvenio" name="idConvenio"  class="form-control select2" style="width: 100%;">
+                                                        <option *ngFor="let persona of estudiantes" [value]="persona.idConvenio">{{ persona.primerNombre }}
+                                                            {{ persona.segundoNombre }} {{persona.primerApellido}} {{persona.segundoApellido}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="inputName" class="col-sm-4 control-label">Buscar areas:</label>
+
+                                                <div class="col-sm-8 select-student">
+                                                    <select #idAr [(ngModel)]="idArea" name="idArea" class="form-control select2" style="width: 100%;">
+                                                            <option *ngFor="let area of listaAreaDepartamento" [value]="area.idArea">{{ area.nombreArea }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 text-center">
+                                            <br>
+                                            <button type="submit" class="btn-save btn btn-primary margin">
+                                                <i class="fa fa-save"></i> Guardar</button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </section>
+                        </div> 
+                        <!-- /#Asignar Area estudiante -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<app-footer></app-footer> 
+</div>
+<div id="growls-default">
+    <div [ngClass]="{'growl': true, 'growl-notice':alertSuccess, 
+                    'growl-error':alertError, 
+                    'growl-warning':alertWarning, 
+                    'growl-large':true, 
+                    'growl-outgoing':!activateAlert}">
+        <div [ngClass]="{'growl-close': true, 'growl-outgoing':!activateAlert}">×</div>
+        <div [ngClass]="{'growl-title': true, 'growl-outgoing':!activateAlert}">
+            <i [ngClass]="{'icon': true, 'fa': true, 
+            'fa-check': alertSuccess, 
+            'fa-close': alertError, 
+            'fa-warning': alertWarning}"></i>
+            {{titleAlert}} </div>
+        <div [ngClass]="{'growl-message': true,'growl-outgoing':!activateAlert}">{{messageAlert}}</div>
+    </div>
+</div>

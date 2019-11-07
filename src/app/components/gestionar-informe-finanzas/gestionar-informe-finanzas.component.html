@@ -1,0 +1,326 @@
+<div class="wrapper">
+    <app-navbar-jf></app-navbar-jf>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+      <h1>
+          Departamento
+          <small> de Finanzas</small>
+      </h1>
+      <ol class="breadcrumb">
+          <li><a [routerLink]="['/home']"><i class="fa fa-home"></i> Home</a></li>
+          <li class="active">Informe recividas</li>
+      </ol>
+  </section>
+<div *ngIf="MessageInformeAprobado == true" class="pad no-print">
+    <div class="callout callout-success">
+        <h4><i class="icon fa fa-check"></i> El informe fue aprobado</h4>
+        <p>Al aprobar se encuentra listo para acreditar el saldo al estudiante.</p>
+    </div>
+</div>
+<div *ngIf="MessageInformeNoAprobado == true" class="pad no-print">
+    <div class="callout callout-info">
+        <h4><i class="icon fa fa-info"></i> El informe fue desaprobado</h4>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modal-informacionStudiante">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Mas información...</h4>
+            </div>
+        <div class="infoConvenio modal-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                        <p class="text-muted text-center">{{ codEstudiante }}</p>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box-header with-border">
+                        <h3 class="modal-name"><strong>{{ nombreCompleto }}</strong> </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h6 class="page-header">DATOS PERSONALES</h6>
+                    <div class="col-md-5">
+                        <p><strong><i class="fa fa-credit-card margin-r-5"></i> Carnet de Identidad:</strong></p>                                        
+                        <p><strong><i class="fa fa-flag-checkered margin-r-5"></i> Nacionalidad:</strong></p>
+                        <p><strong><i class="fa fa-map-marker margin-r-5"></i> Dirección:</strong></p>
+                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha nacimiento:</strong></p>
+                        <p><strong><i class="fa fa-phone margin-r-5"></i> Celular:</strong></p>
+                        <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado de registro:</strong></p>
+                    </div>
+                    <div class="col-md-7">
+                        <p>{{ ci }}</p>   
+                        <p>{{ nacionalidad }}</p>
+                        <p>{{ direccion }}</p>
+                        <p>{{ fechaNacimiento | date: 'dd/MM/yyyy' }}</p>
+                        <p>{{ celular }}</p>
+                        <p>{{ estadoPersona | estado}}</p>
+                    </div>
+            </div>
+            <div class="row">
+                <h6 class="page-header">DATOS DEL CONVENIO</h6>
+                    <div class="col-md-5">
+                        <p *ngIf="carrera"><strong><i class="fa fa-book margin-r-5"></i> Carrera:</strong></p>
+                        <p *ngIf="semestre"><strong><i class="fa fa-star margin-r-5"></i> Semestre:</strong></p>
+                        <p><strong><i class="fa fa-building margin-r-5"></i> Departamento:</strong></p>
+                        <p><strong><i class="fa fa-wrench margin-r-5"></i> Area de trabajo:</strong></p>
+                        <p><strong><i class="fa fa-tag margin-r-5"></i> Beca:</strong></p>
+                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha inicio:</strong></p>
+                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha final:</strong></p>
+                        <p><strong><i class="fa fa-file margin-r-5"></i> Fotocopia de carnet:</strong></p>
+                        <p><strong><i class="fa fa-file-text margin-r-5"></i> Solicitud de trabajo:</strong></p>
+                        <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado del convenio:</strong></p>
+                    </div>
+                    <div class="col-md-7">
+                        <p *ngIf="carrera">{{ carrera }}</p>
+                        <p *ngIf="semestre">{{ semestre }}</p>
+                        <p>{{ nombreDepartamento }}</p>
+                        <div *ngIf="areas.length == 0" class="container-area">
+                            <p>Sin asiganción de área</p>                                
+                        </div>
+                        <div *ngIf="areas.length > 0" class="container-area">
+                            <p *ngFor="let area of areas; let i = index" class="areas">
+                                {{ area }} &nbsp;-&nbsp;
+                            </p>                                
+                        </div>
+                        <p>{{ beca }}</p>
+                        <p>{{ fechaInicio | date: 'dd/MM/yyyy'}}</p>
+                        <p>{{ fechaFinal | date: 'dd/MM/yyyy'}}</p>
+                        <p>{{ fotocopiaCI | boleano }}</p>
+                        <p>{{ solicitudWork | boleano }}</p>
+                        <p>{{ estadoConvenio | estado }}</p>
+                    </div>
+                </div>
+                <div *ngIf="observacionesRegistroHora != null" class="row info-observaciones">
+                    <div class="col-md-12">
+                        <p ><strong><i class="fa fa-eye margin-r-5"></i> Observaciones de registro de asistencia</strong></p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>{{ observacionesRegistroHora }}</p> 
+                    </div>                        
+                </div>
+            </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-acreditacion">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Aprobación de la acreditacón</h4>
+            </div>
+        <form #formConfirmacion="ngForm" name="formAprobacion" class="form-horizontal">   
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                        <p class="text-muted text-center">{{ codEstudiante }}</p>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box-header">
+                        <h3 class="modal-name"><strong>{{ nombreCompleto }}</strong> </h3>                         
+                    </div>
+                </div>                
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                    <label><i class="fa fa-clock-o margin-r-5"></i> Horas:</label>
+                    <div class="input-group col-md-12">
+                        <input [(ngModel)]="Horas" name="Horas" type="text" class="form-control" placeholder="00:00" disabled>
+                    </div>                   
+                    </div>                   
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                    <label><i class="fa fa-money margin-r-5"></i> Saldo:</label>
+                    <div class="input-group col-md-12">
+                        <input [(ngModel)]="Saldo" name="Saldo" type="text" class="form-control" placeholder="00.00 Bs" disabled>
+                    </div>                  
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                    <label><i class="fa fa-clock-o margin-r-5"></i> Reducir:</label>
+                    <div class="input-group col-md-12">
+                        <input (keyup)="inputReducir()" [(ngModel)]="menosHoras" name="menosHoras" type="text" class="form-control" placeholder="00:00">
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                    <label><i class="fa fa-clock-o margin-r-5"></i> Incrementar:</label>
+                    <div class="input-group col-md-12">
+                        <input (keyup)="inputIncrementar()" [(ngModel)]="masHoras" name="masHoras" type="text" class="form-control" placeholder="00:00">
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                    <label><i class="fa fa-clock-o margin-r-5"></i> Total Horas:</label>
+                    <div class="input-group col-md-12">
+                        <input [(ngModel)]="informeFinanzas.totalHorasF" name="informeFinanzas.totalHorasF" type="text" class="form-control" placeholder="00:00" disabled>
+                    </div>  
+                    </div>            
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                    <label><i class="fa fa-money margin-r-5"></i> Total saldo:</label>
+                    <div class="input-group col-md-12">
+                        <input [(ngModel)]="informeFinanzas.totalSaldoF" name="informeFinanzas.totalSaldoF" type="text" class="form-control" placeholder="0 Bs." disabled>
+                    </div> 
+                    </div>                     
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Observación</label>
+                    <textarea [(ngModel)]="informeFinanzas.obsrevacionFinanzas" name="informeFinanzas.obsrevacionFinanzas" class="form-control" rows="3" placeholder="obsevaciones ..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer text-center footer-acreditacion">
+            <div class="col-md-6">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-danger"><i class="fa fa-close"></i> Cancelar</button>
+            </div>
+            <div class="col-md-6">
+                <button (click)="confirmarAprobarInformeEstudiante()" type="button" data-dismiss="modal" aria-label="Close" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+</div>
+<section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                  <div class="box-header with-border">
+                      <h4 class="page-header"><i class="fa fa-paste"></i> Informe de horas y saldos de los estudiantes de todos los departamentos</h4>
+                    
+                      <div class="btn-opciones box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>                          
+                      </div>
+                  </div>                  
+                  <div class="box-body">                    
+                    <p>Lista de horas y saldos totales de los estudiantes que trabajan en la Universidad. </p>
+                    <p>Descripción: <a class="btn-success"><i class="fa fa-check"></i></a> Aprobar&nbsp;&nbsp;<a class="btn-danger"><i class="fa fa-close"></i></a> No aprobar </p>                    
+                    <div class="input-buscador">
+                        <div class="input-group input-group-sm" style="width: 300px;">
+                            <input (keyup)="buscarInforme(buscarEstudiante.value)" #buscarEstudiante type="text" name="buscarName" class="form-control pull-right" placeholder="Buscar estudiante">    
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive pad">
+                        <table class="table table-bordered table-hover ">
+                            <tr class="fila-tabla">
+                                <th style="width: 10px">#</th>
+                                <th class="text-center">Cod.</th>
+                                <th>Nombre completo</th>
+                                <th>Departamento</th>
+                                <th>Fecha</th>
+                                <th style="width: 6%">Total horas</th>
+                                <th style="width: 9%">Total saldo</th>
+                                <th class="text-center" style="width: 6%">Aprovación Jefe</th>
+                                <th class="text-center" style="width: 6%">Aprovación Finanzas</th>
+                                <th class="text-center" style="width: 20%px">Opciones</th>
+                            </tr>
+                            <tr *ngFor="let informe of listInformeEstudiante; let i = index">
+                                <td>{{i+1}}.</td>
+                                <td class="text-center">{{informe.codEstudiante}}</td>
+                                <td>{{informe.primerApellido}} {{informe.segundoApellido}} {{informe.primerNombre}}  {{informe.segundoNombre}}</td>
+                                <td>{{informe.departamento}}</td>
+                                <td>{{informe.fecha | nameDay }}</td>
+                                <td class="text-center">{{informe.totalHoras}}</td>
+                                <td class="text-center">{{informe.totalSaldo}} Bs.</td>
+                                <td class="text-center">
+                                    <span *ngIf="informe.aprobadoJefeDep != null" class="badge bg-green"><i class="fa fa-check"></i></span>
+                                </td>
+                                <td class="text-center">
+                                    <a (click)="aprobarInformeEstudiante(informe.idDepartamento, informe.idRegistroHora, informe.idInformeEstudiante, '1', informe.idConvenio, informe.totalSaldo); informacionEstudiante(informe.idRegistroHora, informe.idPersona)" data-toggle="modal" data-target="#modal-acreditacion" class="btn btn-success btn-margin" title="Aprobar"><i class="fa fa-check"></i></a>
+                                    <a (click)="aprobarInformeEstudiante(informe.idDepartamento, informe.idRegistroHora, informe.idInformeEstudiante, '0', informe.idConvenio, informe.totalSaldo)" class="btn btn-danger btn-margin" data-toggle="tooltip" data-placement="right" title="No aprobar"><i class="fa fa-close"></i></a>
+                                </td>
+                                <td class="text-center">
+                                    <a (click)="informacionEstudiante(informe.idRegistroHora, informe.idPersona)" data-toggle="modal" data-target="#modal-informacionStudiante" class="btn btn-primary btn-margin" title="Ver"><i class="fa fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                  </div>
+                  <div class="box-footer">
+                        <div class="row">
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="info-box border-right">
+                                            <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">CANTIDAD DE ESTUDIANTE</span>
+                                                <span class="info-box-number">{{numStudent}}</span>
+                                            </div>
+                                        </div>
+                                </div>  
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <div class="info-box border-right">
+                                        <span class="info-box-icon"><i class="fa fa-clock-o"></i></span>
+            
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">TOTAL DE HORAS</span>
+                                            <span class="info-box-number">{{numHour}}</span>
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon"><i class="fa fa-money"></i></span>
+            
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">TOTAL DE SALDO</span>
+                                            <span class="info-box-number">{{totalSaldo}} Bs.</span>
+                                        </div>
+                                </div>
+                            </div>                   
+                        </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</div>
+<app-footer></app-footer> 
+</div>
+<div id="growls-default">
+        <div [ngClass]="{'growl': true, 'growl-notice':alertSuccess, 
+                        'growl-error':alertError, 
+                        'growl-warning':alertWarning, 
+                        'growl-large':true, 
+                        'growl-outgoing':!activateAlert}">
+            <div [ngClass]="{'growl-close': true, 'growl-outgoing':!activateAlert}">×</div>
+            <div [ngClass]="{'growl-title': true, 'growl-outgoing':!activateAlert}">
+                <i [ngClass]="{'icon': true, 'fa': true, 
+                'fa-check': alertSuccess, 
+                'fa-close': alertError, 
+                'fa-warning': alertWarning}"></i>
+                {{titleAlert}} </div>
+            <div [ngClass]="{'growl-message': true,'growl-outgoing':!activateAlert}">{{messageAlert}}</div>
+        </div>
+    </div>

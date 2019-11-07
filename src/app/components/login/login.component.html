@@ -1,0 +1,55 @@
+<div class="login-box">
+  <div class="login-logo">
+    <img class="img-responsive img-login" src="assets/img/userLogin.png" alt="User profile picture">
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">
+      <strong>Iniciar sesión</strong></p>
+
+    <form (ngSubmit)="verificarUsuario()" #verficarUser="ngForm" name="frmVerificarUser" >
+      <div [ngClass]="{'has-error': !inputErrorUsuario, 'has-success':inputSuccessUsuario}" class="form-group has-feedback">
+        <input (keyup)="inputUser(user.usuario)" [(ngModel)]="user.usuario" name="user.usuario" type="text" class="form-control" placeholder="Usuario">
+        <span
+        [ngClass]="{'glyphicon':true, 
+        'glyphicon-user':inputErrorUsuario, 
+        'glyphicon-remove':!inputErrorUsuario, 
+        'form-control-feedback':true,
+        'ico-error':!inputErrorUsuario}"></span>
+      </div>
+      <div [ngClass]="{'has-error': !inputErrorPassword, 'has-success':inputSuccessPassword}" class="form-group has-feedback">
+        <input (keyup)="inputPassword(user.password)" [(ngModel)]="user.password" name="user.password" type="password" class="form-control" placeholder="Contraseña">
+        <span 
+        [ngClass]="{'glyphicon':true,
+        'glyphicon-remove':!inputErrorPassword,
+        'glyphicon-lock':iconPassword,  
+        'form-control-feedback':true, 
+        'ico-error':!inputErrorPassword}"></span>
+      </div>
+      <div class="row opciones-login">   
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary btn-flat">Ingresar</button>
+        </div>
+      </div>
+    </form>
+    <a href="#">Olvidé mi contraseña</a><br>
+  </div>
+  <!-- /.login-box-body -->
+</div>
+
+<div *ngIf="alertUserIncorrect" id="growls-default">
+  <div [ngClass]="{'growl': true, 'growl-error':true, 'growl-large':true, 'growl.growl-outgoing':!alertUserIncorrect}">
+    <div class="growl-close">×</div>
+    <div class="growl-title"><i class="icon fa fa-close"></i> Error</div>
+    <div class="growl-message">{{messageError}}</div>
+  </div>
+</div>
+
+<div *ngIf="alertUsuarioDesabilitado" id="growls-default">
+    <div class="growl growl-warning growl-large">
+      <div class="growl-close">×</div>
+      <div class="growl-title"><i class="icon fa fa-warning"></i> Advertencia</div>
+      <div class="growl-message">Usuario desabilitado</div>
+    </div>
+</div>
+

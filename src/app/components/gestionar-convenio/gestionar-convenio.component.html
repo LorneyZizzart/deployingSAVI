@@ -1,0 +1,746 @@
+<div class="wrapper">
+    <app-navbar-jf></app-navbar-jf>
+    <!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Gestionar
+            <small>Convenios</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/home']"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Gestionar convenios</li>
+        </ol>
+    </section>
+    <!---MODAL-->
+    <div class="modal fade" id="modal-horario">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Horarios</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="box-profile">
+                                <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                                <p class="text-muted text-center">650004813</p>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="box-header with-border">
+                                <h3 class="modal-name">{{ infoNombreCompleto }}</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <p><strong><i class="fa fa-book margin-r-5"></i> Carrera:</strong></p>
+                                        <p><strong><i class="fa fa-star margin-r-5"></i> Semestre:</strong></p>
+                                        <p><strong><i class="fa fa-map-marker margin-r-5"></i> Dirección:</strong></p>
+                                        <p><strong><i class="fa fa-flag-checkered margin-r-5"></i> Nacionalidad:</strong></p>
+                                        <p><strong><i class="fa fa-credit-card margin-r-5"></i> Carnet de Identidad:</strong></p>
+                                        <p><strong><i class="fa fa-phone margin-r-5"></i> Celular:</strong></p>
+                                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha nacimiento:</strong></p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p>Ingenieria de Sistemas</p>
+                                        <p>8</p>
+                                        <p>{{ infoDireccion }}</p>
+                                        <p>{{ infoNacionalidad }}</p>
+                                        <p>{{ infoCI }}</p>
+                                        <p>{{ infoCelular }}</p>
+                                        <p>{{ infoFechaNacimiento | date: 'dd/MM/yyyy' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-editar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Editar</h4>
+                </div>
+                <form #editarConvenio="ngForm" name="editarConvenio" class="form-horizontal">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="box-profile">
+                                <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                                <p class="text-muted text-center">{{codEstudiante}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="box-header with-border">
+                                <h3 class="modal-name"><strong>{{ nombreCompleto }}</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="row form-edit">
+                            <div class="col-md-12">
+                                    <div class="form-group">
+                                            <label>Departamento:</label>
+                                            <select #editIdDepto [(ngModel)]="editConvenio.idDepartamento " name="editConvenio.idDepartamento " class="form-control select2" style="width: 100%;">
+                                                <option *ngFor="let departamento of departamentos" [value]="departamento.idDepartamento" >{{ departamento.nombreDepartamento }}</option>
+                                            </select>
+                                            </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Beca:</label>
+                                    <select #editIdBeca [(ngModel)]="editConvenio.idBeca" name="editConvenio.idBeca" class="form-control select2" style="width: 100%;">
+                                            <option *ngFor="let beca of becas" [value]="beca.idBeca" >{{ beca.nombre }}</option>
+                                    </select>
+                                </div>                                    
+                            </div>
+                                <div class="col-md-12">
+                                    <div [ngClass]="{'form-group': true, 'has-error': !inputValEditDateStart}">
+                                        <label>Fecha inicio:</label>                                    
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input (keyup)="inputDateStart(editConvenio.fechaInicio, 3)" [(ngModel)]="editConvenio.fechaInicio" name="editConvenio.fechaInicio" type="text" class="form-control pull-right" id="datepicker" placeholder="01/12/2000">
+                                        </div>
+                                        <span *ngIf="!inputValEditDateStart" class="help-block"><i class="icon fa fa-warning"></i> {{ messaggeDateStart }}</span>  
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div [ngClass]="{'form-group': true, 'has-error': !inputValEditDateFinish}">
+                                        <label>Fecha final:</label>                                    
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input (keyup)="inputDateStart(editConvenio.fechaFinal, 4)" [(ngModel)]="editConvenio.fechaFinal" name="editConvenio.fechaFinal" type="text" class="form-control pull-right" id="datepickers" placeholder="01/12/2000">
+                                        </div>
+                                        <span *ngIf="!inputValEditDateFinish" class="help-block"><i class="icon fa fa-warning"></i> {{ messaggeDateStart }}</span>  
+                                    </div>
+                                </div>
+                            <div class="col-md-12 text-center">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" [(ngModel)]="editConvenio.solicitudTrabajo" name="editConvenio.solicitudTrabajo" class="minimal" che> Solicitud de trabajo
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" [(ngModel)]="editConvenio.fotocopiaCarnet" name="editConvenio.fotocopiaCarnet" class="minimal"> Fotocopia de carnet
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer text-center modal-footer-edit">
+                    <button (click)="putConvenio(editIdDepto.value, editIdBeca.value)" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-refresh"></i> Actualizar</button>
+                </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-informacion">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Mas información...</h4>
+                </div>
+                <div class="infoConvenio modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="box-profile">
+                                <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                                <p class="text-muted text-center">{{codEstudiante}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="box-header with-border">
+                                <h3 class="modal-name"><strong>{{ nombreCompleto }}</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6 class="page-header">DATOS PERSONALES</h6>
+                            <div class="col-md-5">
+                                <p><strong><i class="fa fa-credit-card margin-r-5"></i> Carnet de Identidad:</strong></p>                                        
+                                <p><strong><i class="fa fa-flag-checkered margin-r-5"></i> Nacionalidad:</strong></p>
+                                <p><strong><i class="fa fa-map-marker margin-r-5"></i> Dirección:</strong></p>
+                                <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha nacimiento:</strong></p>
+                                <p><strong><i class="fa fa-phone margin-r-5"></i> Celular:</strong></p>
+                                <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado de registro:</strong></p>
+                            </div>
+                            <div class="col-md-7">
+                                <p>{{ ci }}</p>   
+                                <p>{{ nacionalidad }}</p>
+                                <p>{{ direccion }}</p>
+                                <p>{{ fechaNacimiento | fecha : 1  }}</p>
+                                <p>{{ celular }}</p>
+                                <p>{{ estadoPersona | estado}}</p>
+                            </div>
+                    </div>
+                    <div class="row">
+                        <h6 class="page-header">DATOS DEL CONVENIO</h6>
+                            <div class="col-md-5">
+                                <p *ngIf="carrera"><strong><i class="fa fa-book margin-r-5"></i> Carrera:</strong></p>
+                                <p *ngIf="semestre"><strong><i class="fa fa-star margin-r-5"></i> Semestre:</strong></p>
+                                <p><strong><i class="fa fa-building margin-r-5"></i> Departamento:</strong></p>
+                                <p><strong><i class="fa fa-tag margin-r-5"></i> Beca:</strong></p>
+                                <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha inicio:</strong></p>
+                                <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha final:</strong></p>
+                                <p><strong><i class="fa fa-file margin-r-5"></i> Fotocopia de carnet:</strong></p>
+                                <p><strong><i class="fa fa-file-text margin-r-5"></i> Solicitud de trabajo:</strong></p>
+                                <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado del convenio:</strong></p>
+                            </div>
+                            <div class="col-md-7">
+                                <p *ngIf="carrera">{{ carrera }}</p>
+                                <p *ngIf="semestre">{{ semestre }}</p>
+                                <p>{{ departamento }}</p>
+                                <p>{{ beca }}</p>
+                                <p>{{ fechaInicio | fecha : 1 }}</p>
+                                <p>{{ fechaFinal | fecha : 1 }}</p>
+                                <p>{{ fotocopiaCI | boleano }}</p>
+                                <p>{{ solicitudWork | boleano }}</p>
+                                <p>{{ estadoConvenio | estado }}</p>
+                            </div>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-eliminar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <button type="button"  data-dismiss="modal" aria-label="Close" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button (click)="eliminarConvenio()" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-success">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#lista" data-toggle="tab">Lista</a></li>
+                        <li (click)="activaRegister()"><a href="#registrar" data-toggle="tab">Registrar</a></li>
+                        <li (click)="getEstudiantes()"><a href="#expediente" data-toggle="tab">Expediente</a></li>
+                        
+                    </ul>
+                    <div class="tab-content">
+                        <!-- LISTA -->
+                        <div class="tab-pane active" id="lista">
+                            <section id="new">
+                                <div class="box-header with-border">
+                                    <h4 class="page-header"><i class="fa fa-list-ul"></i> Lista de convenios</h4>
+                                    <div class="box-tools left">
+                                        <div class="input-group input-group-sm" style="width: 300px;">
+                                            <input (keyup)="searchDepartamento(buscarEstudiante.value)" #buscarEstudiante type="text" name="buscarName" class="form-control pull-right" placeholder="Buscar estudiante">
+    
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="table-responsive pad">
+                                    <table class="table table-bordered table-hover">
+                                        <tr class="fila-tabla">
+                                            <th style="width: 5px">#</th>
+                                            <th>Nombre completo</th>
+                                            <th>Departamento</th>
+                                            <th>Tipo de beca</th>
+                                            <th style="width: 12%" class="text-center">Fecha de inicio</th>
+                                            <th style="width: 12%" class="text-center">Fecha final</th>
+                                            <th style="width: 10px" class="text-center">Fotocopia de carnet</th>
+                                            <th style="width: 10px" class="text-center">Solicitud trabajo</th>
+                                            <th class="text-center">Estado</th>
+                                            <th style="width: 15%" class="text-center">Opciones</th>
+                                        </tr>
+                                        <tr *ngFor="let convenio of convenios; let i = index">
+                                            <td class="text-center">{{ i+1 }}.</td>
+                                            <td>{{ convenio.primerApellido }} {{ convenio.segundoApellido }} {{ convenio.primerNombre }} {{ convenio.segundoNombre }}</td>
+                                            <td>{{ convenio.departamento }}</td>
+                                            <td>{{ convenio.beca }}</td>
+                                            <td>{{ convenio.fechaInicio | fecha : 1 }}</td>
+                                            <td>{{ convenio.fechaFinal | fecha : 1}}</td>
+                                            <td class="text-center">
+                                                <span *ngIf="convenio.fotocopiaCarnet != estado" class="badge bg-green"><i class="fa fa-check"></i></span>
+                                                <span *ngIf="convenio.fotocopiaCarnet == estado" class="badge bg-red"><i class="fa fa-times"></i></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span *ngIf="convenio.solicitudTrabajo != estado" class="badge bg-green"><i class="fa fa-check"></i></span>
+                                                <span *ngIf="convenio.solicitudTrabajo == estado" class="badge bg-red"><i class="fa fa-times"></i></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a *ngIf="convenio.estadoConvenio == true"  (click)="editEstadoConvenio(convenio.idConvenio, '0')" class="btn btn-danger btn-margin btn-xs" data-toggle="tooltip" data-placement="right" title="Deshabilitar"><i class="fa fa-close"></i></a>
+                                                <a *ngIf="convenio.estadoConvenio == false" (click)="editEstadoConvenio(convenio.idConvenio, '1')" class="btn btn-success btn-margin btn-xs" data-toggle="tooltip" data-placement="right" title="Habilitar"><i class="fa fa-check"></i></a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a (click)="informacionEstudiante(convenio.idPersona)" data-toggle="modal" class="btn btn-primary btn-margin btn-xs" data-target="#modal-informacion" title="Ver"><i class="fa fa-eye"></i></a>
+                                                <a (click)="searchPutConvenio(convenio.idPersona, convenio.idConvenio)" data-toggle="modal" data-target="#modal-editar" class="btn btn-default btn-margin btn-xs" title="Editar"><i class="fa fa-edit"></i></a>
+                                                <a (click)="deleteConvenio(convenio.idConvenio)" data-toggle="modal" data-target="#modal-eliminar" class="btn btn-danger btn-margin btn-xs" title="Eliminar"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </section>
+                        </div>
+                        <div class="tab-pane" id="registrar">
+                            <section id="new">
+                                <h4 class="page-header"><i class="fa fa-address-book"></i> Registro de datos personales</h4>
+
+                                <form (ngSubmit)="saveConvenio(idEst.value, idDep.value, idBec.value, registroConvenio)" #registroConvenio="ngForm" name="RegistroConvenio" class="form-horizontal">
+
+                                    <div class="row form">
+
+                                            <div class="form-group col-md-6">
+                                                <label for="inputName" class="col-sm-3 control-label">Estudiante * </label>
+
+                                                <div class="col-sm-9 select-student">
+                                                    <select #idEst class="form-control select2" style="width: 100%;">
+                                                      <option *ngFor="let persona of estudiantes" [value]="persona.idPersona">
+                                                        {{persona.primerApellido}} {{persona.segundoApellido}} {{ persona.primerNombre }} {{ persona.segundoNombre }}
+                                                      </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputName" class="col-sm-3 control-label">Departamento * </label>
+
+                                                <div class="col-sm-9 select-student">
+                                                    <select #idDep class="form-control select2" style="width: 100%;">
+                                                      <option *ngFor="let departamento of departamentos" [value]="departamento.idDepartamento" >{{ departamento.nombreDepartamento }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputName" class="col-sm-3 control-label">Beca * </label>
+
+                                                <div class="col-sm-9 select-student">
+                                                    <select #idBec class="form-control select2" style="width: 100%;">
+                                                      <option value="1">Beca Industrial </option>
+                                                      <option value="2">Beca Institucional</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12"  style="padding: 0">
+                                                <div [ngClass]="{'form-group': true, 'col-md-6' : true, 'has-error': !inputValDateStart}">
+                                                    <label class="col-md-3 control-label" >Fecha inicio * </label>
+
+                                                    <div class="col-md-9">
+                                                        <div class="input-group date dateInicio">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input (keyup)="inputDateStart(convenio.fechaInicio, 1)" [(ngModel)]="convenio.fechaInicio" name="convenio.fechaInicio" type="text" class="form-control pull-right" id="datepicker" placeholder="01/01/2000">
+                                                        </div>
+                                                        <span *ngIf="!inputValDateStart" class="help-block"><i class="icon fa fa-warning"></i> {{ messaggeDateStart }}</span>                                                           
+                                                    </div>
+                                                </div>
+
+                                                <div [ngClass]="{'form-group': true, 'col-md-6' : true, 'has-error': !inputValDateFinish}">
+                                                    <label class="col-sm-3 control-label" >Fecha final * </label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group date dateFinal">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input (keyup)="inputDateStart(convenio.fechaFinal, 2)" [(ngModel)]="convenio.fechaFinal" name="convenio.fechaFinal" type="text" class="form-control pull-right" id="datepicker" placeholder="01/01/2000">
+                                                        </div>
+                                                        <span *ngIf="!inputValDateFinish" class="help-block"><i class="icon fa fa-warning"></i> {{ messaggeDateStart }}</span>  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                
+                                        <div class="col-md-12 text-center">
+                                            <br>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>
+                                                        <input type="checkbox" [(ngModel)]="solicitud" name="solicitud" class="minimal" che> Solicitud de trabajo
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>
+                                                        <input type="checkbox" [(ngModel)]="fotocopiaCarnet" name="fotocopiaCarnet" class="minimal"> Fotocopia de carnet
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+
+                                            <div class="form-group text-center">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" [(ngModel)]="aceptoTerminos" name="aceptoTerminos"> Aceptó los <a href="#">terminos y condiciones del convenio</a>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 text-center">
+                                                <button type="submit" class="btn btn-primary margin">
+                                                  <i class="fa fa-save"></i> Guardar
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+                        <!-- /#REGISTRAR -->
+                        <!-- USUARIO -->
+                        <div class="tab-pane" id="expediente">
+                            <section id="new">
+                                <div class="box-header with-border">
+                                    <h4 class="page-header"><i class="fa fa-file-text"></i> Expediente</h4>
+                                    <div class="box-tools left" style="width: 500px">
+                                        <div class="form-group">
+                                            <label for="inputName" class="col-sm-5 control-label" style="margin-top: 3px">Seleccionar estudiante</label>    
+                                            <div class="col-sm-6 select-student" style="padding: 0">
+                                                <select #idExpedienteEst class="form-control select2" style="width: 100%;">
+                                                    <option *ngFor="let persona of estudiantes" [value]="persona.idPersona">
+                                                            {{persona.primerApellido}} {{persona.segundoApellido}} {{ persona.primerNombre }} {{ persona.segundoNombre }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1 input-group-btn" style="padding: 0;">
+                                                <button (click)="getExpedienteEstudiante(idExpedienteEst.value)" 
+                                                style="height: 29px;
+                                                margin: 0;
+                                                padding: 0;
+                                                width: 44px;" 
+                                                type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <br>
+                                    <div class="col-md-3">
+
+                                        <!-- Profile Image -->
+                                        <div class="box box-primary">
+                                            <div class="box-body box-profile">
+                                                <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+
+                                                <h3 class="profile-username text-center">{{nombreCompleto}}</h3>
+
+                                                <p class="text-muted text-center">{{codEstudiante}}</p>
+
+                                                <ul class="list-group list-group-unbordered">
+                                                    <li class="list-group-item">
+                                                        <b>C.I.</b> <a class="pull-right">{{ci}}</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>Telefono</b> <a class="pull-right">{{celular}}</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>Codigo registro</b> <a class="pull-right">{{IdEstudiante}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
+
+                                        <!-- About Me Box -->
+                                        <div class="box box-primary">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Mas datos</h3>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                <strong><i class="fa fa-book margin-r-5"></i> Carrera</strong>
+
+                                                <p>
+                                                    {{carrera}}
+                                                </p>
+
+
+                                                <strong><i class="fa fa-star margin-r-5"></i> Semestre</strong>
+
+                                                <p>{{semestre}}</p>
+
+
+                                                <strong><i class="fa fa-map-marker margin-r-5"></i> Direccion</strong>
+
+                                                <p>{{direccion}}</p>
+
+                                                <strong><i class="fa fa-flag-checkered margin-r-5"></i> Nacionalidad</strong>
+
+                                                <p>{{nacionalidad}}</p>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-md-9">
+                                        <!-- TABLE: MATERIAS AND NOTAS -->
+                                        <div class="box box-success">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Cursos matriculados</h3>
+
+                                                <div class="box-tools pull-right">
+                                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                <div class="table-responsive">
+                                                    <table class="table no-margin">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">#</th>
+                                                                <th class="text-center">Materia</th>
+                                                                <th class="text-center">Primer parcial</th>
+                                                                <th class="text-center">Segundo parcial</th>
+                                                                <th class="text-center">Tercer parcial</th>
+                                                                <th class="text-center">Nota Final</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngFor="let item of notas; let i = index">
+                                                            <tr>
+                                                                <td class="text-center">{{i+1}}</td>
+                                                                <td>{{item.materia}}</td>
+                                                                <td class="text-center"><span [ngClass]="{'label': true, 'label-danger' : item.notaPBajo, 'label-warning':  item.notaPMedio, 'label-success' :item.notaPAlto}">{{item.primerParcial}}</span></td>
+                                                                <td class="text-center"><span [ngClass]="{'label': true, 'label-danger' : item.notaSBajo, 'label-warning':  item.notaSMedio, 'label-success' :item.notaSAlto}">{{item.segundoParcial}}</span></td>
+                                                                <td class="text-center"><span [ngClass]="{'label': true, 'label-danger' : item.notaTBajo, 'label-warning':  item.notaTMedio, 'label-success' :item.notaTAlto}">{{item.tercerParcial}}</span></td>
+                                                                <td class="text-center"><span [ngClass]="{'label': true, 'label-danger' : item.notaFBajo, 'label-warning':  item.notaFMedio, 'label-success' :item.notaFAlto}">{{item.notaFinal}}</span></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- /.table-responsive -->
+                                            </div>
+                                            <!-- /.box-body -->
+                                            <div class="box-footer clearfix text-center">
+                                                <p>Cantidad: <strong>{{cantidadMaterias}} materias</strong></p>
+                                            </div>
+                                            <!-- /.box-footer -->
+                                        </div>
+                                        <!-- /.box -->
+                                        <!-- TABLE: HORARIO -->
+                                        <div class="box box-success">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Horario de clases</h3>
+
+                                                <div class="box-tools pull-right">
+                                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                    <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-horario">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">#</th>
+                                                                        <th class="text-center">Periodo</th>
+                                                                        <th class="text-center">Domingo</th>
+                                                                        <th class="text-center">Lunes</th>
+                                                                        <th class="text-center">Martes</th>
+                                                                        <th class="text-center">Miercoles</th>
+                                                                        <th class="text-center">Jueve</th>
+                                                                        <th class="text-center">Viernes</th>
+                                                                        <th class="text-center">Sábado</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody >
+                                                                    <tr *ngFor="let item of horario">
+                                                                        <td class="text-center">{{item.id}}</td>
+                                                                        <td class="text-center">{{item.hora}}</td>
+                                                                        <td></td>
+                                                                        <td class="text-center"><span *ngIf="item.lunes" class="badge bg-green"><i class="fa fa-check"></i></span></td>
+                                                                        <td class="text-center"><span *ngIf="item.martes" class="badge bg-green"><i class="fa fa-check"></i></span></td>
+                                                                        <td class="text-center"><span *ngIf="item.miercoles" class="badge bg-green"><i class="fa fa-check"></i></span></td>
+                                                                        <td class="text-center"><span *ngIf="item.jueves" class="badge bg-green"><i class="fa fa-check"></i></span></td>
+                                                                        <td class="text-center"><span *ngIf="item.viernes"class="badge bg-green"><i class="fa fa-check"></i></span></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
+                                        <!-- TABLE: EVALUACION DE DESEMPEÑO LABORAL -->
+                                        <div class="box box-success">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Evaluación de rendimiento laboral</h3>
+
+                                                <div class="box-tools pull-right">
+                                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                <div class="row">
+                                                    <!-- /.col -->
+                                                    <div class="col-md-12">
+                                                        <p class="text-center">
+                                                            <strong>Evaluación</strong>
+                                                        </p>
+
+                                                        <div class="progress-group">
+                                                            <span class="progress-text">Puntualidad</span>
+                                                            <span class="progress-number"><b>60</b>/100</span>
+
+                                                            <div class="progress sm">
+                                                                <div class="progress-bar progress-bar-green" style="width: 60%"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.progress-group -->
+                                                        <div class="progress-group">
+                                                            <span class="progress-text">Retrasos</span>
+                                                            <span class="progress-number"><b>30</b>/100</span>
+
+                                                            <div class="progress sm">
+                                                                <div class="progress-bar progress-bar-warning" style="width: 30%"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.progress-group -->
+                                                        <div class="progress-group">
+                                                            <span class="progress-text">Faltas a dias de trabajo</span>
+                                                            <span class="progress-number"><b>10</b>/100</span>
+
+                                                            <div class="progress sm">
+                                                                <div class="progress-bar progress-bar-danger" style="width: 10%"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.progress-group -->
+                                                        <div class="progress-group">
+                                                            <span class="progress-text">Desempeño laboral</span>
+                                                            <span class="progress-number"><b>80</b>/100</span>
+
+                                                            <div class="progress sm">
+                                                                <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.progress-group -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                </div>
+                                                <!-- /.row -->
+                                            </div>
+                                            <!-- ./box-body -->
+                                            <div class="box-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-xs-6">
+                                                        <div class="description-block border-right">
+                                                            <h5 class="description-header">25</h5>
+                                                            <span class="description-text">DIAS DE TRABAJO</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-3 col-xs-6">
+                                                        <div class="description-block border-right">
+                                                            <h5 class="description-header">260:00</h5>
+                                                            <span class="description-text">TOTAL HORAS</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-3 col-xs-6">
+                                                        <div class="description-block border-right">
+                                                            <h5 class="description-header">560 Bs.</h5>
+                                                            <span class="description-text">SALDO ACUMULADO</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-3 col-xs-6">
+                                                        <div class="description-block">
+                                                            <h5 class="description-header">Limpieza</h5>
+                                                            <span class="description-text">DEPARTAMENTO</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                </div>
+                                                <!-- /.row -->
+                                            </div>
+                                            <!-- /.box-footer -->
+                                        </div>
+                                        <!-- /.box -->
+                                    </div>
+                                </div>
+
+                            </section>
+                        </div>
+                        
+                        <!-- /#USUARIO -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<app-footer></app-footer> 
+</div>
+<div id="growls-default">
+    <div [ngClass]="{'growl': true, 'growl-notice':alertSuccess, 
+                    'growl-error':alertError, 
+                    'growl-warning':alertWarning, 
+                    'growl-large':true, 
+                    'growl-outgoing':!activateAlert}">
+        <div [ngClass]="{'growl-close': true, 'growl-outgoing':!activateAlert}">×</div>
+        <div [ngClass]="{'growl-title': true, 'growl-outgoing':!activateAlert}">
+            <i [ngClass]="{'icon': true, 'fa': true, 
+            'fa-check': alertSuccess, 
+            'fa-close': alertError, 
+            'fa-warning': alertWarning}"></i>
+            {{titleAlert}} </div>
+        <div [ngClass]="{'growl-message': true,'growl-outgoing':!activateAlert}">{{messageAlert}}</div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="wrapper">
+  <app-navbar-jf></app-navbar-jf>
+  <!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="box" style="border-top: none">
+      <div class="box-header">
+          <h3 class="widget-user-username" style="color: #2b054a;">Historial del departamento</h3>
+          <h5 class="widget-user-desc">{{ departamento[0].nombreDepartamento }}</h5>
+      </div>
+    </div>
+  </section>
+  <section class="content">
+    <div class="box box-primary" >
+        <div class="box-body" >
+            <ul class="timeline timeline-inverse" *ngFor="let item of historialDepartamento">
+                <!-- timeline time label -->
+                <li class="time-label" >
+                      <span class="bg-red">
+                        {{item.fechaRegistroHistorialDepartamento | date: 'dd/MM/yyyy'}}
+                      </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-building bg-aqua"></i>
+  
+                    <div class="timeline-item">
+  
+                      <h3 class="timeline-header no-border"><strong>Nombre: </strong>{{item.nombreDepartamento}}</h3>
+                    </div>
+                  </li>
+                <li>
+                  <i class="fa fa-file-text-o bg-blue"></i>
+
+                  <div class="timeline-item">
+
+                    <h3 class="timeline-header"> <strong>Historial </strong> </h3>
+
+                    <div class="timeline-body">
+                      <p><strong>Limite de estudiante: </strong>{{item.limiteEstudiante}}</p>
+                      <p><strong>Costo de hora: </strong>{{item.costoHora}}</p>
+                      <p><strong>Estado: </strong>
+                        <span *ngIf="item.estadoHistorialDepartamento" class="badge bg-green"><i class="fa fa-check"></i></span>
+                        <span *ngIf="!item.estadoHistorialDepartamento" class="badge bg-red"><i class="fa fa-times"></i></span>
+
+                    </div>
+                  </div>
+                </li>
+                <!-- END timeline item -->
+              </ul> 
+        </div>
+      </div>
+
+</section>
+</div>
+<!-- /.content-wrapper -->
+<app-footer></app-footer> 
+</div>
+<div id="growls-default">
+    <div [ngClass]="{'growl': true, 'growl-notice':alertSuccess, 
+                    'growl-error':alertError, 
+                    'growl-warning':alertWarning, 
+                    'growl-large':true, 
+                    'growl-outgoing':!activateAlert}">
+        <div [ngClass]="{'growl-close': true, 'growl-outgoing':!activateAlert}">×</div>
+        <div [ngClass]="{'growl-title': true, 'growl-outgoing':!activateAlert}">
+            <i [ngClass]="{'icon': true, 'fa': true, 
+            'fa-check': alertSuccess, 
+            'fa-close': alertError, 
+            'fa-warning': alertWarning}"></i>
+            {{titleAlert}} </div>
+        <div [ngClass]="{'growl-message': true,'growl-outgoing':!activateAlert}">{{messageAlert}}</div>
+    </div>
+</div>

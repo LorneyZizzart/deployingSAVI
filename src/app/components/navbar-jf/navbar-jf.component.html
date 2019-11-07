@@ -1,0 +1,220 @@
+<header class="main-header">
+
+    <!-- Logo -->
+    <a [routerLink]="['/home']" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>SA</b>BI</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>SABI</b> v2</span>
+    </a>
+
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <!-- Messages: style can be found in dropdown.less-->
+                <li *ngIf="idRol == 2 || idRol == 3" class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span *ngIf="bandejaInformeNum > 0" class="label label-warning">{{ bandejaInformeNum }}</span>
+                    </a>
+                    <ul *ngIf="bandejaInformeNum > 0" class="dropdown-menu">
+                        <li class="header">Tiene {{ bandejaInformeNum }} informes sin revisar</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul class="menu">
+                                <li *ngFor="let informe of listInformeEstudiante; let i = index">
+                                    <!-- start message -->
+                                    <a (click)="gestionarBandejaInformes()">
+                                        <div class="pull-left ico-informe">
+                                            <h2 class="ico-informe" ><i class="fa fa-file-text"></i></h2> 
+                                        </div>
+                                        <h4>
+                                            {{informe.primerApellido}} {{informe.segundoApellido}} {{informe.primerNombre}}  {{informe.segundoNombre}}
+                                        </h4>
+                                        <p>{{informe.departamento}}</p>
+                                        <p><strong>{{informe.fecha | nameDay}}</strong></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="footer footer-informes"><a (click)="gestionarBandejaInformes()">Ver todos los informes</a></li>
+                    </ul>
+                </li>
+                <li *ngIf="idRol == 4" class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span *ngIf="asistenciasNum > 0" class="label label-warning">{{ asistenciasNum }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Tiene {{asistenciasNum}} informes sin revisar</li>
+                        <li>
+                            <ul class="menu">
+                                <li *ngFor="let registro of listInformeEstudiante; let i = index">
+                                    <a (click)="gestionarRegistroHoy()">
+                                        <div class="pull-left ico-informe">
+                                            <h2 class="ico-informe" ><i class="fa fa-user"></i></h2> 
+                                        </div>
+                                        <h4>
+                                            {{registro.primerApellido}} {{registro.segundoApellido}} {{registro.primerNombre}}  {{registro.segundoNombre}}
+                                        </h4>
+                                        <p><strong>{{registro.horaEntrada | hora }}:{{registro.minutoEntrada | minuto}}</strong> Hora de ingreso</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="footer footer-informes"><a (click)="gestionarRegistroHoy()">Ver todos los informes</a></li>
+                    </ul>
+                </li>
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="../../../../assets/img/avatar.png" class="user-image" alt="User Image">
+                        <span class="hidden-xs">{{ nombreCompleto }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="../../../../assets/img/avatar.png" class="img-circle" alt="User Image">
+                            <p>
+                                {{ nombreCompleto }} - {{ Persona.rol }}
+                                <small>{{ fechaHoy }}</small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                            </div>
+                            <div class="pull-right">
+                                <a (click)="logOutUsuario()" class="btn btn-default btn-flat">Salir</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="../../../../assets/img/avatar.png" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>{{ nombres }}</p>
+                <i class="fa fa-star text-success"></i> {{ Persona.rol }}
+            </div>
+        </div>
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">Menu de navegación</li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionarUser()">
+                    <i class="fa fa-user"></i> <span>Usuario</span>
+                </a>
+            </li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionarConvenio()">
+                    <i class="fa fa-file-text"></i> <span>Convenio</span>
+                </a>
+            </li>
+            <li *ngIf="idRol== 1" >
+                <a (click)="gestionarDepartamento()">
+                    <i class="fa fa-building"></i> <span>Departamento</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarInfoDepartamento()">
+                    <i class="fa fa-home"></i> <span>Departamento</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarAreaDepto()">
+                    <i class="fa fa-user"></i> <span>Areas de Departamento</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4"  class="header">Registros</li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarRegistroHoy()">
+                    <i class="fa fa-file-text-o"></i> <span>Asistencia de estudiantes</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarRegistroAyer()">
+                    <i class="fa fa-file-text-o"></i> <span>Informe de ayer</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarRegistroWeek()">
+                    <i class="fa fa-file-text-o"></i> <span>Informe de 7 días</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarRegistroMonth()">
+                    <i class="fa fa-file-text-o"></i> <span>Informe de 30 días</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarRegistroPersonalizado()">
+                    <i class="fa fa-file-text-o"></i> <span>Informe personalizado</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4"  class="header">Informes</li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarInformeAprovados()">
+                    <i class="fa fa-paste"></i> <span>Informe aprovabados</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarInformeArchivados()">
+                    <i class="fa fa-folder"></i> <span>Informe archivados</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol== 4" >
+                <a (click)="gestionarInformeEliminado()">
+                    <i class="fa fa-trash"></i> <span>Informe eliminados</span>                    
+                </a>
+            </li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionarBandejaInformes()">
+                    <i class="fa fa-file-o"></i><span>Bandeja de informes</span>
+                </a>
+            </li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionarInformesRevisados()">
+                    <i class="fa fa-paste"></i><span>Informes revisados</span>
+                </a>
+            </li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionaInformesArchivados()">
+                    <i class="fa fa-folder"></i><span>Informes archivadas</span>
+                </a>
+            </li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionarAcreditaciones()">
+                    <i class="fa fa-toggle-up"></i> <span>Acreditaciones</span>
+                </a>
+            </li>
+            <li *ngIf="idRol == 2 || idRol == 3" >
+                <a (click)="gestionarDescuentos()">
+                    <i class="fa fa-toggle-down"></i> <span>Descuentos</span>                    
+                </a>
+            </li>
+            <li class="header">Etiquetas</li>
+            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Importante</span></a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Advertencia</span></a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Información</span></a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

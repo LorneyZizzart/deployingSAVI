@@ -1,0 +1,359 @@
+<div class="wrapper">
+    <app-navbar-jf></app-navbar-jf>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+      <h1>
+          Departamento
+          <small> de {{ nombreDepartamento }}</small>
+      </h1>
+      <ol class="breadcrumb">
+          <li><a [routerLink]="['/home']"><i class="fa fa-home"></i> Home</a></li>
+          <li class="active">Informe del mes</li>
+      </ol>
+  </section>
+<!-- Modal -->
+<div class="modal fade" id="modal-informacion">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Mas información...</h4>
+          </div>
+          <div class="infoConvenio modal-body">
+              <div class="row">
+                  <div class="col-md-3">
+                      <div class="box-profile">
+                          <img class="profile-user-img img-responsive img-circle" src="assets/img/departamento.png" alt="User profile picture">
+                      </div>
+                  </div>
+                  <div class="col-md-9">
+                      <div class="box-header with-border">
+                          <h3 class="modal-name"><strong>DEPARTAEMNTO {{ nombreDepartamento | uppercase }}</strong> </h3>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <hr>
+                  <h4>DATOS DEL JEFE DEL DEPARTAEMNTO</h4>
+                      <div class="col-md-5">
+                          <p><strong><i class="fa fa-user margin-r-5"></i> Nombre completo:</strong></p>    
+                      </div>
+                      <div class="col-md-7">
+                          <p>{{ nombreJefe }}</p>  
+                      </div>
+              </div>
+              <div class="row">
+                  <hr>
+                  <h4>DATOS DEL DEPARTAEMNTO</h4>
+                      <div class="col-md-5">
+                          <p><strong><i class="fa fa-slack margin-r-5"></i> Código departamento:</strong></p>
+                          <p><strong><i class="fa fa-building margin-r-5"></i> Nombre del departamento:</strong></p>
+                          <p><strong><i class="fa fa-money margin-r-5"></i> Costo de hora:</strong></p>
+                          <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha de actualizacion:</strong></p>
+                          <p><strong><i class="fa fa-step-forward margin-r-5"></i> Limite de estudiantes:</strong></p>
+                          <p><strong><i class="fa fa-play margin-r-5"></i> Cant. Est. trabajando:</strong></p>
+                          <p><strong><i class="fa fa-forward margin-r-5"></i> Cupos:</strong></p>
+                          <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado del departamento:</strong></p>
+                      </div>
+                      <div class="col-md-7">
+                          <p>{{ codigoDepartamento }}</p>
+                          <p>{{ nombreDepartamento }}</p>
+                          <p>{{ costoHora }} Bs.</p>
+                          <p>{{ fechaRegistroHistorialDep | date: 'dd/MM/yyyy' }}</p>
+                          <p>{{ limiteEstudiante }}</p>
+                          <p>{{ cantidadEstudiantes }}</p>
+                          <p>{{ cupos }}</p>
+                          <p>{{ estadoDepartamento | estado }}</p>
+                      </div>
+                  </div>
+              </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="modal-eliminar">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header text-center">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Confirmar</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row text-center">
+                  <div class="col-md-6">
+                      <button type="button"  data-dismiss="modal" aria-label="Close" class="btn btn-danger">Cancelar</button>
+                  </div>
+                  <div class="col-md-6">
+                      <button (click)="confirmacionDelete()" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-success">Aceptar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="modal-informacionStudiante">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Mas información...</h4>
+            </div>
+        <div class="infoConvenio modal-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="assets/img/avatar.png" alt="User profile picture">
+                        <p class="text-muted text-center">{{codEstudiante}}</p>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box-header with-border">
+                        <h3 class="modal-name"><strong>{{ nombreCompleto }}</strong> </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h6 class="page-header">DATOS PERSONALES</h6>
+                    <div class="col-md-5">
+                        <p><strong><i class="fa fa-credit-card margin-r-5"></i> Carnet de Identidad:</strong></p>                                        
+                        <p><strong><i class="fa fa-flag-checkered margin-r-5"></i> Nacionalidad:</strong></p>
+                        <p><strong><i class="fa fa-map-marker margin-r-5"></i> Dirección:</strong></p>
+                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha nacimiento:</strong></p>
+                        <p><strong><i class="fa fa-phone margin-r-5"></i> Celular:</strong></p>
+                        <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado de registro:</strong></p>
+                    </div>
+                    <div class="col-md-7">
+                        <p>{{ ci }}</p>   
+                        <p>{{ nacionalidad }}</p>
+                        <p>{{ direccion }}</p>
+                        <p>{{ fechaNacimiento | date: 'dd/MM/yyyy' }}</p>
+                        <p>{{ celular }}</p>
+                        <p>{{ estadoPersona | estado}}</p>
+                    </div>
+            </div>
+            <div class="row">
+                <h6 class="page-header">DATOS DEL CONVENIO</h6>
+                    <div class="col-md-5">
+                        <p *ngIf="carrera"><strong><i class="fa fa-book margin-r-5"></i> Carrera:</strong></p>
+                        <p *ngIf="semestre"><strong><i class="fa fa-star margin-r-5"></i> Semestre:</strong></p>
+                        <p><strong><i class="fa fa-building margin-r-5"></i> Departamento:</strong></p>
+                        <p><strong><i class="fa fa-wrench margin-r-5"></i> Area de trabajo:</strong></p>
+                        <p><strong><i class="fa fa-tag margin-r-5"></i> Beca:</strong></p>
+                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha inicio:</strong></p>
+                        <p><strong><i class="fa fa-calendar margin-r-5"></i> Fecha final:</strong></p>
+                        <p><strong><i class="fa fa-file margin-r-5"></i> Fotocopia de carnet:</strong></p>
+                        <p><strong><i class="fa fa-file-text margin-r-5"></i> Solicitud de trabajo:</strong></p>
+                        <p><strong><i class="fa fa-dot-circle-o margin-r-5"></i> Estado del convenio:</strong></p>
+                    </div>
+                    <div class="col-md-7">
+                        <p *ngIf="carrera">{{ carrera }}</p>
+                        <p *ngIf="semestre">{{ semestre }}</p>
+                        <p>{{ nombreDepartamento }}</p>
+                        <div *ngIf="areas.length == 0" class="container-area">
+                                <p>Sin asiganción de área</p>                                
+                        </div>
+                        <div *ngIf="areas.length > 0" class="container-area">
+                            <p *ngFor="let area of areas; let i = index" class="areas">
+                                {{ area }} &nbsp;-&nbsp;
+                            </p>                                
+                        </div>
+                        <p>{{ beca }}</p>
+                        <p>{{ fechaInicio | date: 'dd/MM/yyyy'}}</p>
+                        <p>{{ fechaFinal | date: 'dd/MM/yyyy'}}</p>
+                        <p>{{ fotocopiaCI | boleano }}</p>
+                        <p>{{ solicitudWork | boleano }}</p>
+                        <p>{{ estadoConvenio | estado }}</p>
+                    </div>
+                </div>
+                <div *ngIf="observacionesRegistroHora != null" class="row info-observaciones">
+                    <div class="col-md-12">
+                        <p ><strong><i class="fa fa-eye margin-r-5"></i> Observaciones de registro de asistencia</strong></p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>{{ observacionesRegistroHora }}</p> 
+                    </div>                        
+                </div>
+            </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal fade" id="modal-aprobacion">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ titleObservation }}</h4>
+            </div>
+            <form (ngSubmit)="registrarAsistencia()" #formAprobacion="ngForm" name="formAprobacion" class="form-horizontal">
+                <div class="infoConvenio modal-body">    
+                    <div class="row form-register">
+                        <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Observación</label>
+                                <textarea [(ngModel)]="registro.observacionRegistroHora" name="registro.observacionRegistroHora" class="form-control" rows="3" placeholder="obsevaciones ..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <button type="button"  data-dismiss="modal" aria-label="Close" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *ngIf="btnConfirmacion == 'aprovacion'"  (click)="confirmarAprovacion()" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-success">Guardar</button>
+                            <button *ngIf="btnConfirmacion == 'delete'" (click)="confirmacionDelete()" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-success">Eliminar</button>
+                        </div>
+                    </div>
+                </div>                    
+            </form>
+        </div>
+    </div>
+</div>
+  <!-- Main content -->
+  <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-primary">
+                  <div class="box-header with-border">
+                      <h4 class="page-header"><i class="fa fa-list-ul"></i> Registro de asistencia de  {{fechaAnterior }}  -  {{fechaHoy | date: 'dd/MM/yyyy' }}</h4>
+
+                      <div class="btn-opciones box-tools pull-right">
+                            <div class="btn-group">
+                                  <button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown">Opciones</button>
+                                  <button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <ul class="dropdown-menu" role="menu">
+                                    <li><a data-toggle="modal" data-target="#modal-informacion" >Informacion</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Imprimir</a></li>
+                                    <li><a href="#">Generar PDF</a></li>
+                                  </ul>
+                          </div>
+                          
+                      </div>
+                  </div>
+                  <!-- /.box-header -->
+                  <div class="box-body">
+                    <p class="text-left">Registro de los estudiantes que ingresaron en el mes. &nbsp;Descripción: <a class="btn-success"><i class="fa fa-check"></i></a> Aprobado&nbsp;&nbsp;  
+                        <a class="btn-danger"><i class="fa fa-close"></i></a> No aproba </p>                      
+                          <div class="table-responsive pad">
+                              <table class="table table-bordered table-hover ">
+                                  <tr class="fila-tabla">
+                                      <th style="width: 10px">#</th>
+                                      <th class="text-center">Cod.</th>
+                                      <th>Nombre completo</th>
+                                      <th>Fecha de ingreso</th>
+                                      <th class="text-center" style="width: 6%">Hora ingreso</th>
+                                      <th class="text-center" style="width: 6%">Hora salida</th>
+                                      <th style="width: 6%">Total horas</th>
+                                      <th style="width: 9%">Total saldo</th>
+                                      <th class="text-center">Aprovación</th>
+                                      <th style="width: 20%px">Opciones</th>
+                                  </tr>
+                                  <tr *ngFor="let registro of informesRegistrosMonth; let i = index">
+                                      <td>{{i+1}}.</td>
+                                      <td class="text-center">{{registro.idRegistroHora}}</td>
+                                      <td>{{registro.primerApellido}} {{registro.segundoApellido}} {{registro.primerNombre}}  {{registro.segundoNombre}}</td>
+                                      <td>{{registro.fechaEntrada | nameDay }}</td>
+                                      <td class="text-center">{{registro.horaEntrada | hora }}:{{registro.minutoEntrada | minuto}}</td>
+                                      <td *ngIf="registro.horaSalida == null"></td>
+                                      <td *ngIf="registro.horaSalida" class="text-center">{{registro.horaSalida | hora }}:{{registro.minutoSalida | minuto}}</td>
+                                      <td class="text-center">{{listHours[i+1] | undefineHora}}</td>
+                                      <td class="text-center">{{listSaldo[i+1] | undefineSaldo}} Bs.</td>
+                                      <td class="text-center">
+                                        <a *ngIf="registro.aprobadoRegistroHora == true && registro.aprobadoFinanzas == false" (click)="registrarAprobacion(registro.idRegistroHora, '0', registro.fechaEntrada, registro.idRegistroHora); resetForm(formAprobacion)" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-aprobacion"  title="Aprobado"><i class="fa fa-check"></i></a>
+                                        <a *ngIf="registro.aprobadoRegistroHora == true && registro.aprobadoFinanzas == true" class="btn btn-success btn-xs disabled" title="Aprobado"><i class="fa fa-check"></i></a>
+                                        <a *ngIf="registro.aprobadoRegistroHora == false && registro.horaSalida != NULL" (click)="registrarAprobacion(registro.idRegistroHora, '1', registro.fechaEntrada, registro.idRegistroHora); resetForm(formAprobacion)" data-toggle="modal" data-target="#modal-aprobacion" class="btn btn-danger btn-xs" title="No aprobado"><i class="fa fa-close"></i></a>
+                                        <a *ngIf="registro.aprobadoRegistroHora == false && registro.horaSalida == NULL" class="btn btn-danger btn-xs disabled" title="No aprobado"><i class="fa fa-close"></i></a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a (click)="informacionEstudiante(registro.idRegistroHora, registro.idPersona)" data-toggle="modal" data-target="#modal-informacionStudiante" class="btn btn-primary btn-xs" title="Ver"><i class="fa fa-eye"></i></a>                                          
+                                        <a *ngIf="registro.aprobadoRegistroHora == false" (click)="eliminarAsistencia(registro.idRegistroHora); resetForm(formAprobacion)" data-toggle="modal" data-target="#modal-aprobacion" class="btn btn-danger btn-xs" title="Eliminar"><i class="fa fa-trash"></i></a>
+                                        <a *ngIf="registro.aprobadoRegistroHora == true" class="btn btn-danger btn-xs disabled" title="Eliminar"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                  </tr>
+                              </table>
+                          </div>
+                  </div>
+                  <!-- ./box-body -->
+                  <div class="box-footer">
+                          <div class="row">
+                                  <div class="col-md-4 col-sm-6 col-xs-12">
+                                          <div class="info-box border-right">
+                                              <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                  
+                                              <div class="info-box-content">
+                                                  <span class="info-box-text">CANTIDAD DE ESTUDIANTE</span>
+                                                  <span class="info-box-number">{{numStudent}}</span>
+                                              </div>
+                                              <!-- /.info-box-content -->
+                                          </div>
+                                  </div>  
+                                  <div class="col-md-4 col-sm-6 col-xs-12">
+                                      <div class="info-box border-right">
+                                          <span class="info-box-icon"><i class="fa fa-clock-o"></i></span>
+              
+                                          <div class="info-box-content">
+                                              <span class="info-box-text">TOTAL DE HORAS</span>
+                                              <span class="info-box-number">{{numHour}}</span>
+                                          </div>
+                                          <!-- /.info-box-content -->
+                                      </div>
+                                  </div>  
+                                  <div class="col-md-4 col-sm-6 col-xs-12">
+                                      <div class="info-box">
+                                          <span class="info-box-icon"><i class="fa fa-money"></i></span>
+              
+                                          <div class="info-box-content">
+                                              <span class="info-box-text">TOTAL DE SALDO</span>
+                                              <span class="info-box-number">{{totalSaldo}} Bs.</span>
+                                          </div>
+                                          <!-- /.info-box-content -->
+                                      </div>
+                                  </div>                   
+                              </div>
+                      <!-- /.row -->
+                  </div>
+                  <!-- /.box-footer -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+      <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<app-footer></app-footer> 
+</div>
+<!-- /.content-wrapper -->
+<div id="growls-default">
+    <div [ngClass]="{'growl': true, 'growl-notice':alertSuccess, 
+                    'growl-error':alertError, 
+                    'growl-warning':alertWarning, 
+                    'growl-large':true, 
+                    'growl-outgoing':!activateAlert}">
+        <div [ngClass]="{'growl-close': true, 'growl-outgoing':!activateAlert}">×</div>
+        <div [ngClass]="{'growl-title': true, 'growl-outgoing':!activateAlert}">
+            <i [ngClass]="{'icon': true, 'fa': true, 
+            'fa-check': alertSuccess, 
+            'fa-close': alertError, 
+            'fa-warning': alertWarning}"></i>
+            {{titleAlert}} </div>
+        <div [ngClass]="{'growl-message': true,'growl-outgoing':!activateAlert}">{{messageAlert}}</div>
+    </div>
+</div>
